@@ -113,6 +113,10 @@ if [[ ! "$reply" = "yes" ]]; then
     exit 1
 fi
 
+# Ask the user for a way to describe the assignment
+echo "Please enter a one-word name for the assignment (e.g., assignment-2)"
+read ASSIGNMENTNAME
+
 # We now loop through each line of the propfind file. For each line,
 # we parse it to generate three variables: the full name to be
 # downloaded by curl, the student ID. Then we download each file into
@@ -129,18 +133,22 @@ while read line; do
     sid=$(echo $davaddr | awk -F '/' '{print $(NF-1)}')
     filename=$(basename $davaddr)
 
+    # Unobfuscated name
+    UNOBNAME="$CLASS-$ASSIGNMENTNAME-$sid"
+    # Obfuscated name (Using ROT47)
+    OBNAME="$(echo "$UNOBNAME" | tr '\!-~' 'P-~\!-O')"."${filename##*.}"
+
     # Download the files. I wish there were a less resource intensive
     # way to do this.
-    curl -u $TFUSER:"$PWD" $davaddr --output $tempdir/$filename
-    md5=$(md5sum "$tempdir/$filename" | awk '{print $1}')
+    curl -u $TFUSER:"$PWD" $davaddr --output $tempdir/"$OBNAME"
 
-    mv $tempdir/"$filename" $tempdir/"$md5"."${filename##*.}"
-    echo "$sid,$md5" >> $CSV
+    # This will be replaced momentarily
+    echo "$UNOBNAME,$OBNAME" >> $CSV
     
 done < $tempprop
 
 # Move the files back into the user's directory:
-OUTPUTDIR="$CLASS-anonymized"
+OUTPUTDIR="$CLASS-$ASSIGNMENTNAME-anonymized"
 rm $tempprop
 mkdir -p "$OUTPUTDIR"
 mv $tempdir/* "$OUTPUTDIR"
