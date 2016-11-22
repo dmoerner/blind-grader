@@ -79,12 +79,29 @@ CSV=$tempdir/"csv"
 # download all the assignments.
 echo "This does not yet support two-factor authentication."
 echo "Make sure you are on Yale's campus or have already accepted a push."
-echo "Enter your net ID"
-read -s TFUSER
-echo "Enter your password"
+
+# We extract CLASS and the WebDav interface from their classesv2
+# link. We will use the CLASS variable independently to organize files
+# locally.
+
+echo "Please copy and paste the base classesv2 link for your course"
+echo "For example: https://classesv2.yale.edu/portal/site/gman213_f16"
+read CLASSESV2
+CLASS=$(echo "$CLASSESV2" | awk -F '/' '{print $NF}')
+CV2WEBDAV="https://classesv2.yale.edu/dav/group-user/"$CLASS
+
+echo "Enter your net ID:"
+read TFUSER
+echo "Enter your password: (It will not be displayed)"
 read -s PWD
+
+# This curl command is arcane, modified from
+# https://blogs.oracle.com/arnaudq/entry/propfind_using_curl
+# Note that here is where we only support doc, docx, and pdf. We use
+# this to exclude extraneous D:response lines. (Otherwise it also
+# matches all directories.)
 echo "Using curl to fetch classesv2 directory structure..."
-curl --user "$TFUSER":"$PWD" -i -X PROPFIND "$CLASSESV2" \
+curl -u "$TFUSER":"$PWD" -i -X PROPFIND "$CV2WEBDAV" \
      --data "<D:propfind xmlns:D='DAV:'><D:prop><D:response/></D:prop></D:propfind>" \
     | grep -e doc -e pdf > $tempprop
 
@@ -123,7 +140,9 @@ while read line; do
 done < $tempprop
 
 # Move the files back into the user's directory:
+OUTPUTDIR="$CLASS-anonymized"
 rm $tempprop
-mv $tempdir/* .
+mkdir -p "$OUTPUTDIR"
+mv $tempdir/* "$OUTPUTDIR"
 rmdir $tempdir
 
