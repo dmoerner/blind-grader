@@ -19,10 +19,10 @@ if [ ! -d "$ANONDIR" ]; then
     exit 2
 fi
 
-echo "Are you sure you want to deanonymize the files?"
+echo "Are you sure you want to deanonymize the files? 'Yes' to continue."
 read reply
 if [[ ! "$reply" = "yes" ]]; then
-    echo "Exiting, finish your grading first!."
+    echo "Exiting, finish your grading first!"
     exit 3
 fi
 
@@ -36,4 +36,4 @@ for i in "$ANONDIR"/*; do
     cp "$i" "$DEANONDIR"/"$UNOBNAME"
 done
 
-echo "The deanonymized files are available in "$DEANONDIR""
+echo "The deanonymized files are available in "$DEANONDIR"."
