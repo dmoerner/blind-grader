@@ -11,20 +11,7 @@ The workaround is to make sure you have already logged in to
 classesv2 and have checked to stay logged in for a day, or to run
 this script on Yale campus.
 
-3. At present, the best we can do is output the files with the
-student's uid. It would be great to correlate uid with email addresses
-automatically. The way to do this is to manually download the .xls
-roster from classesv2. Then if libreoffice is installed we can run:
-
-libreoffice --headless --convert-to-csv $xls-file --outdir $outdir
-
-Then we can parse the csv file to correlate uid with email addresses
-or student names. At present I haven't implemented this because of its
-dependence on more specific software and because of the lack of an
-automated way to download the roster. I could add it as an interactive
-switch at the end of deanonymizer.bash.
-
-4. At present, anonymizer.bash downloads and anonymizes the entire
+3. At present, anonymizer.bash downloads and anonymizes the entire
 class's assignments. It would be good to implement this for specific
 sections or for specific TFs. Unfortunately, this information is not
 available in the WebDAV PROPs.
