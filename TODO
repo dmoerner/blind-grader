@@ -13,12 +13,33 @@ this script on Yale campus.
 
 3. At present, anonymizer.bash downloads and anonymizes the entire
 class's assignments. It would be good to implement this for specific
-sections or for specific TFs. Unfortunately, this information is not
-available in the WebDAV PROPs.
+sections or for specific TFs. But there are some implementation difficulties:
 
-The way to implement this is to have TFs manually download .zip files
-of all the dropboxes they want to grade. (More accurately, make a zip,
-then download it by clicking on it - the interface is non-intuitive.)
-Then a modified anonymizer-by-section.bash would take this zip, open
-it up, correlate filenames with uids by using the PROPFIND interface,
-and then anonymize as before. I hope to implement this soon.
+a. Unfortunately, this information is not available in the WebDAV
+PROPs.
+
+b. You also can't implement it by having the TFs manually download
+.zip files of the relevant section's Dropbox. Although you can view
+Dropboxes by section, you can only zip up the entire class.
+
+c. You also can't implement it by scraping the information from the
+whole class roster xls file - it isn't there at all!
+
+What the user has to do is go to each of their section rosters
+individually, and then export each roster one by one. Then we need to
+parse each of those roster files and anonymize only those.
+
+To implement this I need to do the following:
+
+i. The actual downloading and anonymization in anonymizer.bash to a
+kind of function that takes a list of student ids.
+
+ii. Ask the user if they want to anonymize everything or only section
+by section. If the latter, just grab the full list of sids from
+PROPFIND. If the former, it's more complex. Basically we need a loop
+that keeps asking the TF to upload roster files for sections, and then
+parses those roster files only for sids, and then only downloads those
+sids into a directory with a name for that section.
+
+iii. Modify the deanonymizer directories to accommodate a section in
+the name.
