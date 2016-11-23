@@ -134,3 +134,6 @@ rmdir $TEMPDIR
 echo
 echo "Anonymization complete!"
 echo "Run "bash deanonymizer.bash "$OUTPUTDIR"" when you are done grading!"
+echo "If students submit documents as pdfs, write your comments in a docx or doc"
+echo "file with exactly the same obfuscated name as the pdf in "$OUTPUTDIR". These"
+echo "comment files will then also be deanonymized at the same time!."
