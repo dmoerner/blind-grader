@@ -19,7 +19,7 @@ if [ ! -d "$ANONDIR" ]; then
     exit 2
 fi
 
-echo "Are you sure you want to deanonymize the files? 'Yes' to continue."
+echo "Are you sure you want to deanonymize the files? 'yes' to continue."
 read reply
 if [[ ! "$reply" = "yes" ]]; then
     echo "Exiting, finish your grading first!"
