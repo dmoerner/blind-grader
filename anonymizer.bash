@@ -35,22 +35,6 @@
 
 # I should add that this is presently a total hackjob.
 
-# TODO:
-#
-# 1. Implement a command-line option to use MAT to strip the files of
-# identifying metadata.
-#
-# 2. At present, 2-factor authentication is not supported. (There's a
-# purported guide available, but I don't think this works with Yale:
-# http://www.qed42.com/blog/using-curl-webdav-two-factor-authentication)
-# The workaround is to make sure you have already logged in to
-# classesv2 and have checked to stay logged in for a day, or to run
-# this script on Yale campus.
-#
-# 3. At present, the best we can do is output the files with the
-# student's uid. It would be great to correlate uid with email
-# addresses automatically. I can't figure out how to do that yet.
-
 # We'll work in a temporary directory to start:
 TEMPDIR=$(mktemp -dt "$(basename $0).XXXXXXXXXX")
 # This file will store the propfind data we will parse to know what to

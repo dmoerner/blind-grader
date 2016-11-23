@@ -1,0 +1,37 @@
+TODO:
+
+1. Implement a command-line option to use MAT to strip the files of
+identifying metadata. MAT is only packaged in Debian at the moment, so
+this isn't a very portable solution.
+
+2. At present, 2-factor authentication is not supported. (There's a
+purported guide available, but I don't think this works with Yale:
+http://www.qed42.com/blog/using-curl-webdav-two-factor-authentication)
+The workaround is to make sure you have already logged in to
+classesv2 and have checked to stay logged in for a day, or to run
+this script on Yale campus.
+
+3. At present, the best we can do is output the files with the
+student's uid. It would be great to correlate uid with email addresses
+automatically. The way to do this is to manually download the .xls
+roster from classesv2. Then if libreoffice is installed we can run:
+
+libreoffice --headless --convert-to-csv $xls-file --outdir $outdir
+
+Then we can parse the csv file to correlate uid with email addresses
+or student names. At present I haven't implemented this because of its
+dependence on more specific software and because of the lack of an
+automated way to download the roster. I could add it as an interactive
+switch at the end of deanonymizer.bash.
+
+4. At present, anonymizer.bash downloads and anonymizes the entire
+class's assignments. It would be good to implement this for specific
+sections or for specific TFs. Unfortunately, this information is not
+available in the WebDAV PROPs.
+
+The way to implement this is to have TFs manually download .zip files
+of all the dropboxes they want to grade. (More accurately, make a zip,
+then download it by clicking on it - the interface is non-intuitive.)
+Then a modified anonymizer-by-section.bash would take this zip, open
+it up, correlate filenames with uids by using the PROPFIND interface,
+and then anonymize as before. I hope to implement this soon.
