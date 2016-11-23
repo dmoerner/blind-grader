@@ -26,5 +26,4 @@ The TF then has to correlate the student ID's with email addresses and
 names. I hope in a future version of this script to find some way to
 do this automatically.
 
-This project is (C) Daniel Moerner <dmoerner@gmail.com> and licensed
-under the MIT license. I welcome all comments and questions.
+The author welcomes all comments and questions at dmoerner@gmail.com.
