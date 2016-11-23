@@ -144,4 +144,4 @@ mv $TEMPDIR/* "$OUTPUTDIR"
 rmdir $TEMPDIR
 
 echo "Anonymization complete!"
-echo "Run "deanonymizer.bash "$OUTPUTDIR"" when you are done grading!"
+echo "Run "bash deanonymizer.bash "$OUTPUTDIR"" when you are done grading!"
