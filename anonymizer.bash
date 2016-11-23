@@ -83,6 +83,7 @@ curl -u "$TFUSER":"$PWD" -i -X PROPFIND "$CV2WEBDAV" \
 
 # Verify that the expected number of assignments have been
 # received. Add warning that this downloads files for all TFs.
+echo
 echo "Warning: This script will download and anonymize the files for all sections."
 echo "If you are only trying to anonymize some sections, this will not work." 
 echo "$(wc -l $TEMPPROP | awk '{print $1}') files found. Type 'yes' to continue"
@@ -130,5 +131,6 @@ mkdir -p "$OUTPUTDIR"
 mv $TEMPDIR/* "$OUTPUTDIR"
 rmdir $TEMPDIR
 
+echo
 echo "Anonymization complete!"
 echo "Run "bash deanonymizer.bash "$OUTPUTDIR"" when you are done grading!"
