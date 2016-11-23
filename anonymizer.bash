@@ -97,7 +97,10 @@ curl -u "$TFUSER":"$PWD" -i -X PROPFIND "$CV2WEBDAV" \
      --data "<D:propfind xmlns:D='DAV:'><D:prop><D:response/></D:prop></D:propfind>" \
     | grep -e doc -e pdf > $TEMPPROP
 
-# Verify that the expected number of assignments have been received.
+# Verify that the expected number of assignments have been
+# received. Add warning that this downloads files for all TFs.
+echo "Warning: This script will download and anonymize the files for all sections."
+echo "If you are only trying to anonymize some sections, this will not work." 
 echo "$(wc -l $TEMPPROP | awk '{print $1}') files found. Type 'yes' to continue"
 read reply
 if [[ ! "$reply" = "yes" ]]; then

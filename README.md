@@ -3,6 +3,12 @@
 This project contains two scripts designed to automate the anonymizing
 of student submissions to classesv2. It requires curl and bash.
 
+WARNING: anonymizer.bash will anonymize all assignments submitted to
+the class at once. If you are one TF of many and only want to
+anonymize your own sections, this will not work for you. There is no
+easy way to implement more fine-grained anonymization, but I will try
+to work on it.
+
 The first script, anonymizer.bash, is entirely interactive. We assume
 that each student's Dropbox has a single file (the relevant
 assignment) of type docx, doc, or pdf. We assume that the files
