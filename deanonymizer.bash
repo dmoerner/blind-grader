@@ -1,10 +1,11 @@
 #!/bin/bash
 
+# This script is (c) 2016 Daniel Moerner <dmoerner@gmail.com) and
+# licensed under the MIT License.
+
 # This script takes as an argument a folder which contains rot47
 # encrypted filenames. It reverses the rot47 encryption and copies the
 # renamed files into a new directory.
-
-# This removes the need for any implementation of csv files.
 
 # I know my error handling is crap.
 if [ $# -ne 1 ]; then
@@ -37,6 +38,7 @@ for i in "$ANONDIR"/*; do
 done
 
 echo "The deanonymized files are available in "$DEANONDIR"."
+echo
 
 echo
 echo "Do you want to try to associate student IDs with real names and emails?"
@@ -47,42 +49,40 @@ if [[ ! "$reply" = "yes" ]]; then
     echo "Correlate the uid's yourself in "$DEANONDIR"! Exiting."
     exit 0
 fi
-echo "Please export the roster file from classesv2."
+echo
+echo "Please export the roster file from classesv2 and save it here as "
+echo "xls or csv."
+echo
+echo "Here are the csv and xls files available in the current directory:"
+ls | grep -e xls -e csv
+echo
+echo "Please type the name of the roster file:"
+read ROSTER
+echo
 
-if [[ -f roster.csv ]]; then
-    echo "csv already found in present directory."
-    CSV=roster.csv
-# We now test if they have libreoffice installed.
-elif command -v libreoffice > /dev/null; then
-    echo "Libreoffice found, we will convert xls files automatically."
-    echo "Please save the file as "roster.xls" in the current directory."
-    echo "Please type 'yes' when this is complete:"
-    read reply
-    if [[ $reply == "yes" ]]; then
-	if [[ -f roster.xls ]]; then
-	    echo "roster.xls found! Converting to csv..."
-	    libreoffice --headless --convert-to csv "roster.xls"
-	    [[ -f roster.csv ]] || {echo "Something went wrong in conversion, exiting"; exit 4}
-	    CSV="roster.csv"
-	    rm roster.xls
-	fi
+if [[ ! -f "$ROSTER" ]]; then
+    echo "Roster "$ROSTER" not found! Correlate yourself!"
+    exit 2
+fi
+
+# Have to be careful with quotation here:
+# http://stackoverflow.com/a/407334
+if [[ $ROSTER == *.csv ]]; then
+    echo "csv roster found!"
+    CSV="$ROSTER"
+elif [[ $ROSTER == *.xls ]]; then
+    if command -v libreoffice > /dev/null; then
+	echo "Libreoffice found, we will convert xls files automatically."
+	libreoffice --headless --convert-to csv "$ROSTER"
+	CSV="${ROSTER%*.}".csv
     else
-	echo "Roster not found. Correlate uid's yourself! Exiting."
+	echo "Libreoffice not found! Correlate uid's yourself! Exiting."
 	exit 5
     fi
 else
-    echo "Libreoffice not found, you will have to convert from xls to csv yourself."
-    echo "Please download the roster and open it in Excel. Save the file yourself"
-    echo "as "roster.csv" in the current directory."
-    echo "Please type 'yes' when this is complete:"
-    read reply
-    if [[ $reply == "yes" ]]; then
-	[[ -f roster.csv ]] || {echo "roster.csv not found, exiting."; exit 6}
-	CSV="roster.csv"
-    else
-	echo "Do the correlation yourself, exiting!"
-	exit 7
-    fi
+    echo "Filetype of $ROSTER not supported."
+    echo "Please try again with xls or csv."
+    exit 6
 fi
 
 # We now go through each deanonymized file and rename it to include
