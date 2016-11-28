@@ -1,4 +1,32 @@
-TODO:
+# TODO:
+
+* Will implement soon:
+
+1. Introduce correlating student ids with real names and emails into
+anonymizer.bash. Now that we need rosters anyway for section mode,
+section mode should obviously just use those rosters to anonymize the
+student names. We should then add the optional switch to use a roster
+to "all" mode only. There are two benefits to this scheme:
+
+a. We don't need the TF to save the roster files.
+b. We will have, hopefully, better anonymization, in the sense that
+you don't just need to remember 5 random characters.
+
+2. Introduce functions into the script, including a standardized way
+of checking errors.
+
+* Hope to implement eventually:
+
+1. Introduce some support for anonymizing student submissions as they
+come in. One way to do this is to keep track of when we last fetched
+data from WebDAV, and then compare that with the dates of
+uploads. Stef notes that I need to add error checking for the
+situation where people reupload their file with changes.
+
+2. Port the script to a proper language (Python? OCaml?). This would
+help with error checking, etc.
+
+* Probably never going to implement:
 
 1. Implement a command-line option to use MAT to strip the files of
 identifying metadata. MAT is only packaged in Debian at the moment, so
