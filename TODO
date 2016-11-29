@@ -15,6 +15,36 @@ you don't just need to remember 5 random characters.
 2. Introduce functions into the script, including a standardized way
 of checking errors.
 
+3. Mac OS X: Tested on 10.11.6. Everything works (git is pre-installed
+too), except that Word fails to open anonymized files. Seems to be a
+globbing error. Strangely pdfs are fine so the problem must be in Word
+itself. Need to try a different implementation of rot. (Can I do some
+sort of a rot40 that has @, \, ., \"? Looking ahead to anonymizing
+with student names and emails.)
+
++ It turns out that \ is the only think that makes it croak. So I
+  should just remove \.
+
+4. Mac OS X, cont: Their implementation of awk doesn't support -v, so
+deanonymizer doesn't get the full names. So it doesn't support
+-vFPAT. You need a space: "-v FPAT". But it still doesn't work
+properly. What it seems to be doing is actually regarding only the
+comma WITHIN the quotes as the delimiter. When it's the opposite. What
+I want is to ignore that comma. So something has gone wrong with the
+regex here. I'll have to try to debug this somehow.
+
++ A depends on mawk or gawk would fix this problem. But it would be
+nice to make it portable and work with BSD awk (nawk).
+
++ There are various solutions when EVERY field has quotes, e.g., -F '","|"'.
++ But it seems like we need the gawk tricks when only some fields have quotes.
++ But here's a claimed solution I don't have time to test yet:
++ backreference.org/2010/04/17/csv-parsing-with-awk
++ Yes, this should work cone I figure out how to run it.
+
+5. Deanonymizer.bash: It should let you prompt again to list the
+available files after you've uploaded a few.
+
 * Hope to implement eventually:
 
 1. Introduce some support for anonymizing student submissions as they
